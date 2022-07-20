@@ -1,0 +1,24 @@
+{
+  "name": "kafka-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:basic-consumer": "ts-node ./basic/consumer.ts",
+    "start:basic-producer": "ts-node ./basic/producer.ts",
+    "prepare": "husky install"
+  },
+  "author": "Chun Hoong Lim",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/uuid": "^8.3.4",
+    "husky": "^8.0.0",
+    "prettier": "^2.7.1",
+    "pretty-quick": "^3.1.3",
+    "ts-node": "^10.8.2"
+  },
+  "dependencies": {
+    "node-rdkafka": "^2.13.0",
+    "uuid": "^8.3.2"
+  }
+}
