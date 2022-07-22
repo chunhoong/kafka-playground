@@ -1,23 +1,23 @@
-import { KafkaConsumer } from 'node-rdkafka';
+import { Kafka } from 'kafkajs';
 import { topic } from './config';
 
-const consumer = new KafkaConsumer(
-  {
-    'group.id': 'kafka',
-    'metadata.broker.list': 'localhost:9092'
-  },
-  {}
-);
+const kafka = new Kafka({
+  clientId: 'kafka-playground-producer-client',
+  brokers: ['localhost:9092']
+});
 
-consumer.connect();
+const consumer = kafka.consumer({ groupId: 'kafka' });
 
-consumer
-  .on('ready', () => {
-    consumer.subscribe([topic]);
-    consumer.consume();
-    console.log('Subscribed and consumed!');
-  })
-  .on('data', (data) => {
-    console.log(`Received!`);
-    console.log(data.value?.toString());
+(async () => {
+  await consumer.connect();
+  await consumer.subscribe({ topic, fromBeginning: true });
+  console.log('Subscribed and consumed!');
+  await consumer.run({
+    eachMessage: async ({ message }) => {
+      console.log(`Received!`);
+      console.log({
+        value: message?.value?.toString()
+      });
+    }
   });
+})();

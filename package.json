@@ -18,7 +18,7 @@
     "ts-node": "^10.8.2"
   },
   "dependencies": {
-    "node-rdkafka": "^2.13.0",
+    "kafkajs": "^2.1.0",
     "uuid": "^8.3.2"
   }
 }
