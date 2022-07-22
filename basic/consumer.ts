@@ -1,5 +1,5 @@
-import { KafkaConsumer } from 'node-rdkafka';
-import { topic } from './config';
+import { KafkaConsumer, LibrdKafkaError, Message } from 'node-rdkafka';
+import { partition, topic } from './config';
 
 const consumer = new KafkaConsumer(
   {
@@ -11,13 +11,26 @@ const consumer = new KafkaConsumer(
 
 consumer.connect();
 
-consumer
-  .on('ready', () => {
-    consumer.subscribe([topic]);
-    consumer.consume();
-    console.log('Subscribed and consumed!');
-  })
-  .on('data', (data) => {
-    console.log(`Received!`);
-    console.log(data.value?.toString());
-  });
+consumer.on('ready', async () => {
+  consumer.subscribe([topic]);
+  console.log('Subscribed and consumed!');
+  consumer.consume(onReceived);
+});
+
+const onReceived = (error: LibrdKafkaError, messages: Message[] | Message) => {
+  console.log(`Received from consume callback!`);
+  if (error) {
+    console.error(error);
+  } else {
+    if (Array.isArray(messages)) {
+      messages.forEach((message) => {
+        console.log({ ...message, value: message.value?.toString() });
+      });
+    } else {
+      console.log(`Single message found!`);
+      const message = messages as Message;
+      console.log({ ...message, value: message.value?.toString() });
+    }
+    consumer.commit(messages);
+  }
+};
