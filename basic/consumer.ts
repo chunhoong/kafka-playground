@@ -7,7 +7,7 @@ const consumer = new KafkaConsumer(
     'metadata.broker.list': 'localhost:9092',
     offset_commit_cb: true
   },
-  {}
+  { 'auto.offset.reset': 'earliest' }
 );
 
 consumer.connect();
