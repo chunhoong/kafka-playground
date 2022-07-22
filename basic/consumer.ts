@@ -1,21 +1,36 @@
-import { KafkaConsumer, LibrdKafkaError, Message } from 'node-rdkafka';
+import { KafkaConsumer, LibrdKafkaError, Message, TopicPartition, TopicPartitionOffset } from 'node-rdkafka';
 import { partition, topic } from './config';
 
 const consumer = new KafkaConsumer(
   {
     'group.id': 'kafka',
-    'metadata.broker.list': 'localhost:9092'
+    'metadata.broker.list': 'localhost:9092',
+    offset_commit_cb: true
   },
   {}
 );
 
 consumer.connect();
 
-consumer.on('ready', async () => {
-  consumer.subscribe([topic]);
-  console.log('Subscribed and consumed!');
-  consumer.consume(onReceived);
-});
+consumer
+  .on('ready', async () => {
+    consumer.subscribe([topic]);
+    console.log('Subscribed and consumed!');
+    consumer.consume(onReceived);
+  })
+  .on('offset.commit', (error, topicPartitions: TopicPartitionOffset[]) => {
+    if (error) {
+      console.error('Hmmmm');
+      console.error(error);
+    } else {
+      console.log(`Commited`);
+      console.log(topicPartitions);
+    }
+  })
+  .on('event.error', (error: LibrdKafkaError) => {
+    console.error('Oops');
+    console.error(error);
+  });
 
 const onReceived = (error: LibrdKafkaError, messages: Message[] | Message) => {
   console.log(`Received from consume callback!`);
