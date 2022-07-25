@@ -1,6 +1,8 @@
 import { KafkaConsumer, LibrdKafkaError, Message, Producer, TopicPartitionOffset } from 'node-rdkafka';
 import { broker, partition, topic } from './config';
 
+jest.setTimeout(20000);
+
 let consumer: KafkaConsumer;
 let producer: Producer;
 
@@ -97,6 +99,6 @@ describe('ProduceAndConsume', () => {
   it('should publish and consume', async () => {
     initConsumer();
     initProducer();
-    await expect(isMessageConsumed(() => consumedMessages.includes(message), 300, 45000)).resolves.toBeTruthy();
+    await expect(isMessageConsumed(() => consumedMessages.includes(message), 300, 15000)).resolves.toBeTruthy();
   });
 });
