@@ -1,2 +1,2 @@
-export const topic = 'test';
+export const topic = 'basic';
 export const partition = 0;

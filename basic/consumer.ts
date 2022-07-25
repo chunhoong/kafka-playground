@@ -1,5 +1,5 @@
-import { KafkaConsumer, LibrdKafkaError, Message, TopicPartition, TopicPartitionOffset } from 'node-rdkafka';
-import { partition, topic } from './config';
+import { KafkaConsumer, LibrdKafkaError, Message, TopicPartitionOffset } from 'node-rdkafka';
+import { topic } from './config';
 
 const consumer = new KafkaConsumer(
   {
