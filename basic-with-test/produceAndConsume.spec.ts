@@ -1,4 +1,5 @@
 import { KafkaConsumer, LibrdKafkaError, Message, Producer, TopicPartitionOffset } from 'node-rdkafka';
+import { v4 as uuidV4 } from 'uuid';
 import { broker, partition, topic } from './config';
 
 jest.setTimeout(20000);
@@ -6,7 +7,7 @@ jest.setTimeout(20000);
 let consumer: KafkaConsumer;
 let producer: Producer;
 
-const message = 'Hello world!';
+const message = `Hello world!: ${uuidV4()}`;
 
 const consumedMessages: Array<string | undefined> = [];
 
