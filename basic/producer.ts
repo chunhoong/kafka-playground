@@ -4,7 +4,7 @@ import inputEventEmitter from './inputEventEmitter';
 import { readInput } from './util';
 
 const producer = new Producer({
-  'metadata.broker.list': 'localhost:9092',
+  'metadata.broker.list': 'localhost:29092',
   dr_cb: true,
   dr_msg_cb: true
 });
